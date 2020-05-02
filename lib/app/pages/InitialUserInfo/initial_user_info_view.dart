@@ -18,6 +18,7 @@ class InitialUserInfoPageState
   @override
   Widget buildPage() {
     return Scaffold(
+      key: globalKey,
       body: Container(
         color: Colors.cyan,
         child: Column(
@@ -115,11 +116,28 @@ class InitialUserInfoPageState
             Spacer(flex: 1),
             reusableTextHeader('Dados pessoais'),
             SizedBox(height: 10),
-            reusableTextFieldWithTextStyle('Nome', 20),
+            reusableTextFieldWithTextStyle(
+              'Nome',
+              20,
+              textController: controller.nameTextController,
+              validator: controller.validateNameField,
+            ),
             SizedBox(height: 10),
-            reusableTextFieldWithTextStyle('E-mail', 20),
+            reusableTextFieldWithTextStyle(
+              'E-mail',
+              20,
+              inputType: TextInputType.emailAddress,
+              textController: controller.emailTextController,
+              validator: controller.validateEmailField,
+            ),
             SizedBox(height: 10),
-            reusableTextFieldWithTextStyle('Celular', 20),
+            reusableTextFieldWithTextStyle(
+              'Celular',
+              20,
+              inputType: TextInputType.phone,
+              textController: controller.phoneTextController,
+              validator: controller.validatePhoneField,
+            ),
             Spacer(flex: 1),
             Row(
               mainAxisSize: MainAxisSize.min,
@@ -158,6 +176,9 @@ class InitialUserInfoPageState
               prefixIcon: Icon(Icons.monetization_on),
             ),
             keyboardType: TextInputType.number,
+            controller: controller.incomeTextController,
+            autovalidate: controller.autoValidateIncomeForm,
+            validator: controller.validateIncomeField,
           ),
           Spacer(flex: 1),
           Row(
@@ -194,6 +215,9 @@ class InitialUserInfoPageState
               prefixIcon: Icon(Icons.monetization_on),
             ),
             keyboardType: TextInputType.number,
+            controller: controller.expensesTextController,
+            autovalidate: controller.autoValidateExpensesForm,
+            validator: controller.validateExpensesField,
           ),
           Spacer(flex: 1),
           Row(
@@ -236,14 +260,15 @@ class InitialUserInfoPageState
             value: 2,
             onChanged: controller.handleRadioChange,
             groupValue: controller.radioValue,
-            title:
-                Text('Sim, somente por e-mail', style: TextStyle(fontSize: 20, color: Colors.white)),
+            title: Text('Sim, somente por e-mail',
+                style: TextStyle(fontSize: 20, color: Colors.white)),
           ),
           RadioListTile(
             value: 3,
             onChanged: controller.handleRadioChange,
             groupValue: controller.radioValue,
-            title: Text('Sim, somente por SMS', style: TextStyle(fontSize: 20, color: Colors.white)),
+            title: Text('Sim, somente por SMS',
+                style: TextStyle(fontSize: 20, color: Colors.white)),
           ),
           RadioListTile(
             value: 3,
@@ -275,10 +300,7 @@ class InitialUserInfoPageState
       highlightColor: Colors.indigoAccent,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
       child: Text(text, style: TextStyle(fontSize: fontSize)),
-      onPressed: () {
-        controller.carouselController.nextPage(
-            duration: Duration(milliseconds: 300), curve: Curves.linear);
-      },
+      onPressed: controller.nextStep,
     );
   }
 
@@ -292,10 +314,7 @@ class InitialUserInfoPageState
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
       borderSide: BorderSide(color: Colors.white),
       child: Text(text, style: TextStyle(fontSize: fontSize)),
-      onPressed: () {
-        controller.carouselController.previousPage(
-            duration: Duration(milliseconds: 300), curve: Curves.linear);
-      },
+      onPressed: controller.previousStep,
     );
   }
 
@@ -310,13 +329,29 @@ class InitialUserInfoPageState
         style: TextStyle(fontSize: fontSize, color: Colors.white));
   }
 
-  Widget reusableTextFieldWithTextStyle(String labelText, double fontSize) {
-    return TextField(
-      decoration: InputDecoration(labelText: labelText, focusColor: Colors.white, hoverColor: Colors.white, fillColor: Colors.white),
+  Widget reusableTextFieldWithTextStyle(
+    String labelText,
+    double fontSize, {
+    TextInputType inputType = TextInputType.text,
+    TextEditingController textController,
+    FormFieldValidator<String> validator,
+  }) {
+    return TextFormField(
+      controller: textController,
+      keyboardType: inputType,
+      autovalidate: controller.autoValidatePersonalDataForm,
+      validator: validator,
+      decoration: InputDecoration(
+        labelText: labelText,
+        focusColor: Colors.white,
+        hoverColor: Colors.white,
+        fillColor: Colors.white,
+      ),
       style: TextStyle(
-          fontSize: fontSize,
-          color: Colors.white,
-          decorationColor: Colors.white),
+        fontSize: fontSize,
+        color: Colors.white,
+        decorationColor: Colors.white,
+      ),
     );
   }
 }

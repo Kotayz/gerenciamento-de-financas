@@ -53,63 +53,70 @@ class InitialUserInfoController extends BaseController {
   }
 
   bool personalDataFormIsNotValid() {
-    if (validateNameField() != null) return true;
-    if (validateEmailField() != null) return true;
-    if (validatePhoneField() != null) return true;
+    if (validateNameField(nameTextController.text) != null) return true;
+    if (validateEmailField(emailTextController.text) != null) return true;
+    if (validatePhoneField(phoneTextController.text) != null) return true;
     return false;
   }
 
   bool incomeFormIsNotValid() {
-    if (validateIncomeField() != null) return true;
+    if (validateIncomeField(incomeTextController.text) != null) return true;
     return false;
   }
 
   bool expensesFormIsNotValid() {
-    if (validateExpensesField() != null) return true;
+    if (validateExpensesField(expensesTextController.text) != null) return true;
     return false;
   }
 
-  String validateNameField() {
-    if (nameTextController.text.isEmpty) {
+  String validateNameField(String value) {
+    if (value.isEmpty) {
       return "Esse campo é obrigatório";
     }
     return null;
   }
 
-  String validateEmailField() {
-    if (emailTextController.text.isEmpty) {
+  String validateEmailField(String value) {
+    if (value.isEmpty) {
       return "Esse campo é obrigatório";
     }
     // TODO: verificar se o e-mail é válido
     return null;
   }
 
-  String validatePhoneField() {
-    if (phoneTextController.text.isEmpty) {
+  String validatePhoneField(String value) {
+    if (value.isEmpty) {
       return "Esse campo é obrigatório";
     }
     // TODO: verificar se o número de telefone é válido
     return null;
   }
 
-  String validateIncomeField() {
-    if (incomeTextController.text.isEmpty) {
+  String validateIncomeField(String value) {
+    if (value.isEmpty) {
       return "Esse campo é obrigatório";
     }
-    if (double.tryParse(incomeTextController.text) == null) {
+    if (double.tryParse(value.replaceFirst(",", ".")) == null) {
       return "Esse campo deve ser um número decimal";
     }
     return null;
   }
 
-  String validateExpensesField() {
-    if (expensesTextController.text.isEmpty) {
+  String validateExpensesField(String value) {
+    if (value.isEmpty) {
       return "Esse campo é obrigatório";
     }
-    if (double.tryParse(incomeTextController.text) == null) {
+    if (double.tryParse(value.replaceFirst(",", ".")) == null) {
       return "Esse campo deve ser um número decimal";
     }
     return null;
+  }
+
+  void previousStep() {
+    carouselController.previousPage(
+      duration: Duration(milliseconds: 300),
+      curve: Curves.linear,
+    );
   }
 
   void nextStep() {
@@ -128,6 +135,9 @@ class InitialUserInfoController extends BaseController {
         autoValidateExpensesForm = true;
         if (expensesFormIsNotValid()) changeStep = false;
         break;
+      case 4:
+        saveUserInfo();
+        return;
     }
 
     if (changeStep) {
