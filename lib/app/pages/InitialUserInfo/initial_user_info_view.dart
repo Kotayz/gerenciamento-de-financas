@@ -1,8 +1,7 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
-import 'package:intro_slider/slide_object.dart';
 import 'initial_user_info_controller.dart';
-import 'package:intro_slider/intro_slider.dart';
 
 void run() => runApp(InitialUserInfoPage());
 
@@ -15,88 +14,60 @@ class InitialUserInfoPageState
     extends ViewState<InitialUserInfoPage, InitialUserInfoController> {
   InitialUserInfoPageState() : super(InitialUserInfoController());
 
-//  List<Slide> slides = new List();
-
-  @override
-  void initState() {
-    super.initState();
-//    slides.add(
-//      Slide(
-//        backgroundColor: Colors.redAccent,
-//        widgetDescription: welcomeStep(),
-//      ),
-//    );
-//    slides.add(
-//      Slide(
-//        backgroundColor: Color(0xfff5a623),
-//        widgetDescription: personalDataStep(),
-//      ),
-//    );
-//    slides.add(
-//      Slide(
-//        backgroundColor: Color(0xfff5a623),
-//        widgetDescription: incomeStep(),
-//      ),
-//    );
-//    slides.add(
-//      Slide(
-//        backgroundColor: Color(0xfff5a623),
-//        widgetDescription: expenseStep(),
-//      ),
-//    );
-//    slides.add(
-//      Slide(
-//        backgroundColor: Color(0xfff5a623),
-//        widgetDescription: tipStep(),
-//      ),
-//    );
-  }
-
-  void onDonePress() {
-    // Do what you want
-  }
-
   @override
   Widget buildPage() {
     return Scaffold(
-      body: IntroSlider(
-        slides: this.slides(),
-        onDonePress: this.onDonePress,
-        isScrollable: false,
-        isShowSkipBtn: false,
-        isShowPrevBtn: true,
-        nameNextBtn: "Continuar".toUpperCase(),
-        nameDoneBtn: "Concluir".toUpperCase(),
-        namePrevBtn: "Voltar".toUpperCase(),
-        widthDoneBtn: 110,
-        widthPrevBtn: 110,
+      body: Container(
+        color: Color(0xfff5a623),
+        child: Column(
+          children: <Widget>[
+            CarouselSlider(
+              options: CarouselOptions(
+                height: MediaQuery.of(context).size.height - 100,
+                viewportFraction: 1.0,
+                enlargeCenterPage: false,
+                autoPlay: false,
+                enableInfiniteScroll: false,
+                scrollPhysics: NeverScrollableScrollPhysics(),
+                onPageChanged: controller.onStepChanged,
+              ),
+              carouselController: controller.carouselController,
+              items: <Widget>[
+                welcomeStep(),
+                personalDataStep(),
+                incomeStep(),
+                expenseStep(),
+                tipStep(),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                indicatorDot(controller.currentStep == 0),
+                indicatorDot(controller.currentStep == 1),
+                indicatorDot(controller.currentStep == 2),
+                indicatorDot(controller.currentStep == 3),
+                indicatorDot(controller.currentStep == 4),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  List<Slide> slides() {
-    return <Slide>[
-      Slide(
-        backgroundColor: Colors.redAccent,
-        widgetDescription: welcomeStep(),
+  Widget indicatorDot(bool selected) {
+    return Container(
+      width: 8.0,
+      height: 8.0,
+      margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: selected
+            ? Color.fromRGBO(0, 0, 0, 0.9)
+            : Color.fromRGBO(0, 0, 0, 0.4),
       ),
-      Slide(
-        backgroundColor: Color(0xfff5a623),
-        widgetDescription: personalDataStep(),
-      ),
-      Slide(
-        backgroundColor: Color(0xfff5a623),
-        widgetDescription: incomeStep(),
-      ),
-      Slide(
-        backgroundColor: Color(0xfff5a623),
-        widgetDescription: expenseStep(),
-      ),
-      Slide(
-        backgroundColor: Color(0xfff5a623),
-        widgetDescription: tipStep(),
-      ),
-    ];
+    );
   }
 
   Widget welcomeStep() {
@@ -105,7 +76,7 @@ class InitialUserInfoPageState
         horizontal: 20,
       ),
       child: Column(
-//      mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
 //      mainAxisSize: MainAxisSize.max,
         children: <Widget>[
@@ -130,6 +101,8 @@ class InitialUserInfoPageState
               fontSize: 20,
             ),
           ),
+          SizedBox(height: 20),
+          doneButton("Vamos lá!"),
         ],
       ),
     );
@@ -141,7 +114,7 @@ class InitialUserInfoPageState
         horizontal: 20,
       ),
       child: Column(
-//      mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
 //      mainAxisSize: MainAxisSize.max,
         children: <Widget>[
@@ -173,6 +146,8 @@ class InitialUserInfoPageState
             ),
             style: TextStyle(fontSize: 20),
           ),
+          SizedBox(height: 20),
+          doneButton("Prosseguir"),
         ],
       ),
     );
@@ -184,7 +159,7 @@ class InitialUserInfoPageState
         horizontal: 20,
       ),
       child: Column(
-//      mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
 //      mainAxisSize: MainAxisSize.max,
         children: <Widget>[
@@ -206,6 +181,8 @@ class InitialUserInfoPageState
           TextField(
             style: TextStyle(fontSize: 20),
           ),
+          SizedBox(height: 20),
+          doneButton("Prosseguir"),
         ],
       ),
     );
@@ -217,7 +194,7 @@ class InitialUserInfoPageState
         horizontal: 20,
       ),
       child: Column(
-//      mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
 //      mainAxisSize: MainAxisSize.max,
         children: <Widget>[
@@ -239,6 +216,8 @@ class InitialUserInfoPageState
           TextField(
             style: TextStyle(fontSize: 20),
           ),
+          SizedBox(height: 20),
+          doneButton("Prosseguir"),
         ],
       ),
     );
@@ -250,7 +229,7 @@ class InitialUserInfoPageState
         horizontal: 20,
       ),
       child: Column(
-//      mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
 //      mainAxisSize: MainAxisSize.max,
         children: <Widget>[
@@ -313,8 +292,22 @@ class InitialUserInfoPageState
               ),
             ),
           ),
+          SizedBox(height: 20),
+          doneButton("Concluir"),
         ],
       ),
+    );
+  }
+
+  Widget doneButton(String text) {
+    return FlatButton(
+      child: Text(text),
+      onPressed: () {
+        controller.carouselController.nextPage(
+          duration: Duration(milliseconds: 300),
+          curve: Curves.linear,
+        );
+      },
     );
   }
 }
