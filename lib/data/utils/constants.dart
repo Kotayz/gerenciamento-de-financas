@@ -3,3 +3,7 @@ class DioConfig {
   static const int connectTimeOut = 10000;
   static const int receiveTimeOut = 20000;
 }
+
+class Preferences {
+  static const String UserId = 'savedUserId';
+}

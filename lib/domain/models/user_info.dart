@@ -22,7 +22,7 @@ class UserInfo {
 
     return UserInfo(
       name: json['nomeUsuario'],
-      email: json['email'],
+      email: json['email_id'],
       phone: json['celular'],
       flagTipsEmail: json['flagDicasEmail'],
       flagTipsPhone: json['flagDicasCelular'],
@@ -34,7 +34,7 @@ class UserInfo {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['nomeUsuario'] = this.name;
-    data['email'] = this.email;
+    data['email_id'] = this.email;
     data['celular'] = this.phone;
     data['flagDicasEmail'] = this.flagTipsEmail;
     data['flagDicasCelular'] = this.flagTipsPhone;

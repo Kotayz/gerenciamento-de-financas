@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gerenciar_financas_app/app/pages/Splash/splash_view.dart';
 import 'app/pages/InitialUserInfo/initial_user_info_view.dart';
 
 void main() => runApp(Main());
@@ -17,7 +18,8 @@ class BuildMain extends StatelessWidget {
       title: 'App para gerenciamento de finanças pessoais',
       theme:
           ThemeData().copyWith(appBarTheme: AppBarTheme(color: Colors.black)),
-      home: InitialUserInfoPage(),
+//      home: InitialUserInfoPage(),
+      home: SplashPage(),
     );
   }
 }
