@@ -1,22 +1,49 @@
 import 'package:carousel_slider/carousel_controller.dart';
-import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
+import 'package:flutter/material.dart';
+import 'package:gerenciar_financas_app/app/base_controller.dart';
+import 'package:gerenciar_financas_app/app/pages/Home/home_view.dart';
+import 'package:gerenciar_financas_app/app/pages/InitialUserInfo/initial_user_info_presenter.dart';
+import 'package:gerenciar_financas_app/data/repositories/user_info.dart';
 
-class InitialUserInfoController extends Controller {
+class InitialUserInfoController extends BaseController {
   int radioValue = -1;
   CarouselController carouselController = CarouselController();
   int currentStep = 0;
 
-  InitialUserInfoController() : super();
+  bool autoValidatePersonalDataForm = false;
+  bool autoValidateIncomeForm = false;
+  bool autoValidateExpensesForm = false;
+
+  final TextEditingController nameTextController = TextEditingController();
+  final TextEditingController emailTextController = TextEditingController();
+  final TextEditingController phoneTextController = TextEditingController();
+  final TextEditingController incomeTextController = TextEditingController();
+  final TextEditingController expensesTextController = TextEditingController();
+
+  final SaveUserInfoPresenter _saveUserInfoPresenter;
+
+  bool _hasError = false;
+
+  InitialUserInfoController()
+      : _saveUserInfoPresenter = SaveUserInfoPresenter(UserInfoRepository()),
+        super();
 
   @override
   void initListeners() {
-    // TODO: implement initListeners
+    _saveUserInfoPresenter.onComplete = () {
+      if (!_hasError)
+        Navigator.of(getContext()).pushReplacement(
+            MaterialPageRoute(builder: (context) => HomePage()));
+    };
+
+    _saveUserInfoPresenter.onError = (e) {
+      showError(e);
+      _hasError = true;
+    };
   }
 
   void handleRadioChange(int value) {
-//    print(radioValue);
     radioValue = value;
-//    print(radioValue);
     refreshUI();
   }
 
@@ -25,8 +52,107 @@ class InitialUserInfoController extends Controller {
     refreshUI();
   }
 
-  void nextPage() {
-    carouselController.nextPage();
+  bool personalDataFormIsNotValid() {
+    if (validateNameField() != null) return true;
+    if (validateEmailField() != null) return true;
+    if (validatePhoneField() != null) return true;
+    return false;
+  }
+
+  bool incomeFormIsNotValid() {
+    if (validateIncomeField() != null) return true;
+    return false;
+  }
+
+  bool expensesFormIsNotValid() {
+    if (validateExpensesField() != null) return true;
+    return false;
+  }
+
+  String validateNameField() {
+    if (nameTextController.text.isEmpty) {
+      return "Esse campo é obrigatório";
+    }
+    return null;
+  }
+
+  String validateEmailField() {
+    if (emailTextController.text.isEmpty) {
+      return "Esse campo é obrigatório";
+    }
+    // TODO: verificar se o e-mail é válido
+    return null;
+  }
+
+  String validatePhoneField() {
+    if (phoneTextController.text.isEmpty) {
+      return "Esse campo é obrigatório";
+    }
+    // TODO: verificar se o número de telefone é válido
+    return null;
+  }
+
+  String validateIncomeField() {
+    if (incomeTextController.text.isEmpty) {
+      return "Esse campo é obrigatório";
+    }
+    if (double.tryParse(incomeTextController.text) == null) {
+      return "Esse campo deve ser um número decimal";
+    }
+    return null;
+  }
+
+  String validateExpensesField() {
+    if (expensesTextController.text.isEmpty) {
+      return "Esse campo é obrigatório";
+    }
+    if (double.tryParse(incomeTextController.text) == null) {
+      return "Esse campo deve ser um número decimal";
+    }
+    return null;
+  }
+
+  void nextStep() {
+    bool changeStep = true;
+
+    switch (currentStep) {
+      case 1:
+        autoValidatePersonalDataForm = true;
+        if (personalDataFormIsNotValid()) changeStep = false;
+        break;
+      case 2:
+        autoValidateIncomeForm = true;
+        if (incomeFormIsNotValid()) changeStep = false;
+        break;
+      case 3:
+        autoValidateExpensesForm = true;
+        if (expensesFormIsNotValid()) changeStep = false;
+        break;
+    }
+
+    if (changeStep) {
+      carouselController.nextPage(
+        duration: Duration(milliseconds: 300),
+        curve: Curves.linear,
+      );
+    }
+
     refreshUI();
+  }
+
+  void saveUserInfo() {
+    if (personalDataFormIsNotValid() ||
+        incomeFormIsNotValid() ||
+        expensesFormIsNotValid()) return;
+
+    _saveUserInfoPresenter.save(
+      nameTextController.text,
+      emailTextController.text,
+      phoneTextController.text,
+      radioValue == 1 || radioValue == 2,
+      radioValue == 1 || radioValue == 3,
+      double.parse(incomeTextController.text),
+      double.parse(expensesTextController.text),
+    );
   }
 }
