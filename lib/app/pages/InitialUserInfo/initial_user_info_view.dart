@@ -18,7 +18,7 @@ class InitialUserInfoPageState
   Widget buildPage() {
     return Scaffold(
       body: Container(
-        color: Color(0xfff5a623),
+        color: Colors.cyan,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -80,29 +80,27 @@ class InitialUserInfoPageState
       padding: EdgeInsets.symmetric(
         horizontal: 20,
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Text(
-            'Seja bem vindo!',
-            style: TextStyle(
-              fontSize: 30,
-              fontWeight: FontWeight.bold,
+      child: Container(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            reusableTextHeader('Seja bem vindo!'),
+            SizedBox(height: 30),
+            reusableTextWithTextStyle(
+                'Olá, estamos felizes com o seu primeiro passo para uma vida financeira mais saudável.',
+                20),
+            SizedBox(height: 10),
+            reusableTextWithTextStyle(
+                'Primeiramente, precisamos saber alguns dados seus. Mas, não se preocupe, você poderá alterá-los quando desejar.',
+                20),
+            SizedBox(height: 50),
+            Row(
+              children: <Widget>[Expanded(child: doneButton("Vamos lá!", 20))],
             ),
-          ),
-          SizedBox(height: 30),
-          reusableTextWithTextStyle(
-              'Olá, estamos felizes com o seu primeiro passo para uma vida financeira mais saudável.',
-              20),
-          SizedBox(height: 10),
-          reusableTextWithTextStyle(
-              'Primeiramente, precisamos saber alguns dados seus. Mas, não se preocupe, você poderá alterá-los quando desejar.',
-              20),
-          SizedBox(height: 20),
-          doneButton("Vamos lá!"),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -118,26 +116,21 @@ class InitialUserInfoPageState
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Text(
-              'Dados pessoais',
-              style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            reusableTextHeader('Dados pessoais'),
             SizedBox(height: 10),
             reusableTextFieldWithTextStyle('Nome', 20),
             SizedBox(height: 10),
             reusableTextFieldWithTextStyle('E-mail', 20),
             SizedBox(height: 10),
             reusableTextFieldWithTextStyle('Celular', 20),
-            SizedBox(height: 30),
+            SizedBox(height: 50),
             Row(
               mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                Expanded(child: previousButton("Voltar")),
-                Expanded(child: doneButton("Prosseguir")),
+                Expanded(child: previousButton("Voltar", 15)),
+                SizedBox(width: 50),
+                Expanded(child: doneButton("Prosseguir", 15)),
               ],
             ),
           ],
@@ -156,25 +149,20 @@ class InitialUserInfoPageState
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Text(
-            'Receita',
-            style: TextStyle(
-              fontSize: 30,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+          reusableTextHeader('Receita'),
           SizedBox(height: 30),
           reusableTextWithTextStyle(
               'Em média, quanto você recebe mensalmente?', 20),
           SizedBox(height: 10),
           TextField(style: TextStyle(fontSize: 20)),
-          SizedBox(height: 30),
+          SizedBox(height: 50),
           Row(
             mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              Expanded(child: previousButton("Voltar")),
-              Expanded(child: doneButton("Prosseguir")),
+              Expanded(child: previousButton("Voltar", 15)),
+              SizedBox(width: 50),
+              Expanded(child: doneButton("Prosseguir", 15)),
             ],
           ),
         ],
@@ -184,34 +172,27 @@ class InitialUserInfoPageState
 
   Widget expenseStep() {
     return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: 20,
-      ),
+      padding: EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Text(
-            'Despesas',
-            style: TextStyle(
-              fontSize: 30,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+          reusableTextHeader('Despesas'),
           SizedBox(height: 30),
           reusableTextWithTextStyle(
               'Aproximadamente, quais são as suas despesas fixas mensais (água, luz, gás, internet, etc)?',
               20),
           SizedBox(height: 10),
           TextField(style: TextStyle(fontSize: 20)),
-          SizedBox(height: 30),
+          SizedBox(height: 50),
           Row(
             mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              Expanded(child: previousButton("Voltar")),
-              Expanded(child: doneButton("Prosseguir")),
+              Expanded(child: previousButton("Voltar", 15)),
+              SizedBox(width: 50),
+              Expanded(child: doneButton("Prosseguir", 15)),
             ],
           ),
         ],
@@ -229,120 +210,99 @@ class InitialUserInfoPageState
         crossAxisAlignment: CrossAxisAlignment.start,
 //      mainAxisSize: MainAxisSize.max,
         children: <Widget>[
-          Text(
-            'Dicas',
-            style: TextStyle(
-              fontSize: 30,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+          reusableTextHeader('Dicas'),
           SizedBox(height: 30),
           Text(
             'Para finalizar, você gostaria de receber informações e dicas sobre como cuidar melhor da sua saúde financeira?',
-            style: TextStyle(
-              fontSize: 20,
-            ),
+            style: TextStyle(fontSize: 20),
           ),
           SizedBox(height: 10),
           RadioListTile(
             value: 1,
             onChanged: controller.handleRadioChange,
             groupValue: controller.radioValue,
-            title: Text(
-              'Sim, por e-mail e por SMS',
-              style: TextStyle(
-                fontSize: 20,
-              ),
-            ),
+            title: Text('Sim, por e-mail e por SMS',
+                style: TextStyle(fontSize: 20)),
           ),
           RadioListTile(
             value: 2,
             onChanged: controller.handleRadioChange,
             groupValue: controller.radioValue,
-            title: Text(
-              'Sim, somente por e-mail',
-              style: TextStyle(
-                fontSize: 20,
-              ),
-            ),
+            title:
+                Text('Sim, somente por e-mail', style: TextStyle(fontSize: 20)),
           ),
           RadioListTile(
             value: 3,
             onChanged: controller.handleRadioChange,
             groupValue: controller.radioValue,
-            title: Text(
-              'Sim, somente por SMS',
-              style: TextStyle(
-                fontSize: 20,
-              ),
-            ),
+            title: Text('Sim, somente por SMS', style: TextStyle(fontSize: 20)),
           ),
-          RadioListTile(
-            value: 4,
-            onChanged: controller.handleRadioChange,
-            groupValue: controller.radioValue,
-            title: Text(
-              'Não',
-              style: TextStyle(
-                fontSize: 20,
-              ),
-            ),
+          SizedBox(height: 50),
+          Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Expanded(child: previousButton("Voltar", 15)),
+              SizedBox(width: 50),
+              Expanded(child: doneButton("Concluir", 15))
+            ],
           ),
-          SizedBox(height: 20),
-          Center(child: doneButton("Concluir")),
         ],
       ),
     );
   }
 
-  Widget doneButton(String text) {
+  Widget doneButton(String text, double fontSize) {
     return FlatButton(
-      color: Colors.white,
-      textColor: Color(0xfff5a623),
-      disabledColor: Colors.grey,
-      disabledTextColor: Colors.black,
+      color: Colors.blueAccent,
+      textColor: Colors.white,
       padding: EdgeInsets.all(8.0),
-      splashColor: Colors.blueAccent,
-      shape: new RoundedRectangleBorder(
-        borderRadius: new BorderRadius.circular(30.0),
-      ),
-      child: Text(text),
+      splashColor: Colors.indigo,
+      highlightColor: Colors.indigoAccent,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
+      child: Text(text, style: TextStyle(fontSize: fontSize)),
       onPressed: () {
         controller.carouselController.nextPage(
-          duration: Duration(milliseconds: 300),
-          curve: Curves.linear,
-        );
+            duration: Duration(milliseconds: 300), curve: Curves.linear);
       },
     );
   }
 
-  Widget previousButton(String text) {
-    return FlatButton(
-      child: Text(text),
+  Widget previousButton(String text, double fontSize) {
+    return OutlineButton(
+      textColor: Colors.white,
+      padding: EdgeInsets.all(8.0),
+      splashColor: Colors.indigo,
+      highlightedBorderColor: Colors.white,
+      highlightColor: Colors.indigoAccent,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
+      borderSide: BorderSide(color: Colors.white),
+      child: Text(text, style: TextStyle(fontSize: fontSize)),
       onPressed: () {
         controller.carouselController.previousPage(
-          duration: Duration(milliseconds: 300),
-          curve: Curves.linear,
-        );
+            duration: Duration(milliseconds: 300), curve: Curves.linear);
       },
     );
+  }
+
+  Widget reusableTextHeader(String value) {
+    return Text(value,
+        style: TextStyle(
+            fontSize: 35, fontWeight: FontWeight.bold, color: Colors.black));
   }
 
   Widget reusableTextWithTextStyle(String value, double fontSize) {
-    return Text(
-      value,
-      style: TextStyle(
-        fontSize: fontSize,
-      ),
-    );
+    return Text(value,
+        style: TextStyle(fontSize: fontSize, color: Colors.white));
   }
 
   Widget reusableTextFieldWithTextStyle(String labelText, double fontSize) {
     return TextField(
-      decoration: InputDecoration(
-        labelText: labelText,
-      ),
-      style: TextStyle(fontSize: fontSize),
+      decoration: InputDecoration(labelText: labelText),
+      style: TextStyle(
+          fontSize: fontSize,
+          color: Colors.white,
+          decorationColor: Colors.white),
     );
   }
 }
