@@ -93,7 +93,6 @@ class InitialUserInfoPageState
             reusableTextWithTextStyle(
                 'Primeiramente, precisamos saber alguns dados seus. Mas, não se preocupe, você poderá alterá-los quando desejar.',
                 20),
-            SizedBox(height: 50),
             Spacer(flex: 1),
             Row(children: <Widget>[
               Expanded(child: doneButton("Vamos lá!", 20))
@@ -123,12 +122,13 @@ class InitialUserInfoPageState
             reusableTextFieldWithTextStyle('Celular', 20),
             Spacer(flex: 1),
             Row(
-              mainAxisSize: MainAxisSize.max,
+              mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Expanded(child: previousButton("Voltar", 15)),
+                Expanded (child: previousButton("Voltar", 15)),
                 Spacer(),
-                Expanded(child: doneButton("Prosseguir", 15))
+                Expanded (child: doneButton("Prosseguir", 15))
               ],
             ),
           ],
@@ -165,7 +165,7 @@ class InitialUserInfoPageState
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               Expanded(child: previousButton("Voltar", 15)),
-              SizedBox(width: 50),
+              Spacer(),
               Expanded(child: doneButton("Prosseguir", 15))
             ],
           ),
@@ -195,14 +195,13 @@ class InitialUserInfoPageState
             ),
             keyboardType: TextInputType.number,
           ),
-          SizedBox(height: 50),
           Spacer(flex: 1),
           Row(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               Expanded(child: previousButton("Voltar", 15)),
-              SizedBox(width: 50),
+              Spacer(),
               Expanded(child: doneButton("Prosseguir", 15))
             ],
           ),
@@ -246,14 +245,19 @@ class InitialUserInfoPageState
             groupValue: controller.radioValue,
             title: Text('Sim, somente por SMS', style: TextStyle(fontSize: 20, color: Colors.white)),
           ),
-          SizedBox(height: 50),
+          RadioListTile(
+            value: 3,
+            onChanged: controller.handleRadioChange,
+            groupValue: controller.radioValue,
+            title: Text('Não', style: TextStyle(fontSize: 20, color: Colors.white)),
+          ),
           Spacer(flex: 1),
           Row(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               Expanded(child: previousButton("Voltar", 15)),
-              SizedBox(width: 50),
+              Spacer(),
               Expanded(child: doneButton("Concluir", 15))
             ],
           ),
