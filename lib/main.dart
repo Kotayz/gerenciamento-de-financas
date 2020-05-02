@@ -17,7 +17,7 @@ class BuildMain extends StatelessWidget {
       title: 'App para gerenciamento de finanças pessoais',
       theme:
           ThemeData().copyWith(appBarTheme: AppBarTheme(color: Colors.black)),
-      home: InitialUserInfoPage(),
+      home: SafeArea(child: InitialUserInfoPage()),
     );
   }
 }
