@@ -4,6 +4,7 @@ import 'package:gerenciar_financas_app/app/base_controller.dart';
 import 'package:gerenciar_financas_app/app/pages/Home/home_view.dart';
 import 'package:gerenciar_financas_app/app/pages/InitialUserInfo/initial_user_info_presenter.dart';
 import 'package:gerenciar_financas_app/data/repositories/user_info.dart';
+import 'package:gerenciar_financas_app/domain/models/user_info.dart';
 
 class InitialUserInfoController extends BaseController {
   int radioValue = -1;
@@ -33,7 +34,7 @@ class InitialUserInfoController extends BaseController {
     _saveUserInfoPresenter.onComplete = () {
       if (!_hasError)
         Navigator.of(getContext()).pushReplacement(
-            MaterialPageRoute(builder: (context) => HomePage()));
+            MaterialPageRoute(builder: (context) => HomePage(UserInfo())));
     };
 
     _saveUserInfoPresenter.onError = (e) {

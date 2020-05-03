@@ -1,8 +1,6 @@
-import 'package:carousel_slider/carousel_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:gerenciar_financas_app/app/base_controller.dart';
 import 'package:gerenciar_financas_app/app/pages/Home/home_view.dart';
-import 'package:gerenciar_financas_app/app/pages/InitialUserInfo/initial_user_info_presenter.dart';
 import 'package:gerenciar_financas_app/app/pages/InitialUserInfo/initial_user_info_view.dart';
 import 'package:gerenciar_financas_app/app/pages/Splash/splash_presenter.dart';
 import 'package:gerenciar_financas_app/data/repositories/user_info.dart';
@@ -23,7 +21,7 @@ class SplashController extends BaseController {
       }
       else {
         Navigator.of(getContext()).pushReplacement(
-            MaterialPageRoute(builder: (context) => HomePage()));
+            MaterialPageRoute(builder: (context) => HomePage(userInfo)));
       }
     };
 

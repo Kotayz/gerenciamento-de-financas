@@ -1,16 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 import 'package:gerenciar_financas_app/app/pages/Home/home_controller.dart';
-
-void run() => runApp(HomePage());
+import 'package:gerenciar_financas_app/domain/models/user_info.dart';
 
 class HomePage extends View {
+  final UserInfo userInfo;
+
+  HomePage(this.userInfo);
+
   @override
-  State<StatefulWidget> createState() => _HomePageState();
+  State<StatefulWidget> createState() => _HomePageState(userInfo);
 }
 
 class _HomePageState extends ViewState<HomePage, HomeController> {
-  _HomePageState() : super(HomeController());
+  _HomePageState(userInfo) : super(HomeController(userInfo));
+
+  @override
+  void initState() {
+    super.initState();
+    controller.loadExpenses();
+  }
 
   Widget doneButton(String text, double fontSize) {
     return FlatButton(
@@ -32,7 +41,7 @@ class _HomePageState extends ViewState<HomePage, HomeController> {
         title: Text('Home'),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: EdgeInsets.all(8.0),
         child: Container(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -64,32 +73,35 @@ class _HomePageState extends ViewState<HomePage, HomeController> {
                       ListTile(
                         title: Text('Gastos de hoje'),
                       ),
-                      Expanded(
-                          child: ListView(
-                            children: <Widget>[
-                              ListTile(
-                                title: Text('Mercado'),
-                                subtitle: Text('12:45'),
-                                trailing: Text('R\$10,00'),
+                      controller.isLoadingExpenses
+                          ? CircularProgressIndicator()
+                          : Expanded(
+                              child: ListView.builder(
+                                padding: const EdgeInsets.all(8),
+                                itemCount: controller.expenses?.length ?? 0,
+                                itemBuilder: (BuildContext context, int index) {
+                                  var expense = controller.expenses[index];
+                                  return ListTile(
+                                    title: Text(expense.title),
+                                    subtitle: Text(expense.dateTime.toString()),
+                                    trailing: Text('R\$${expense.value}'),
+                                  );
+                                },
                               ),
-                              ListTile(
-                                title: Text('Mercado'),
-                                subtitle: Text('12:45'),
-                                trailing: Text('R\$10,00'),
-                              ),
-                            ],
-                          )
-                      )
+                            ),
                     ],
                   ),
                 ),
               ),
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  doneButton("Adicionar gastos", 15),
-                ],
+              Flexible(
+                flex: 1,
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    doneButton("Adicionar gastos", 15),
+                  ],
+                ),
               )
             ],
           ),
