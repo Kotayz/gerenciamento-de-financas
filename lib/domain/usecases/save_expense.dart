@@ -20,9 +20,10 @@ class SaveExpenseUseCase extends CompletableUseCase<SaveExpenseUseCaseParams> {
         title: params.title,
         value: params.value,
         dateTime: params.dateTime,
+        category: params.category
       );
 
-      await expenseBaseRepository.saveExpense(expense);
+      await expenseBaseRepository.saveExpense(expense, params.email);
     } catch (e) {
       controller.addError(e);
     }
@@ -36,6 +37,7 @@ class SaveExpenseUseCaseParams {
   final double value;
   final DateTime dateTime;
   final String category;
+  final String email;
 
-  SaveExpenseUseCaseParams(this.title, this.value, this.dateTime, this.category);
+  SaveExpenseUseCaseParams(this.title, this.value, this.dateTime, this.category, this.email);
 }

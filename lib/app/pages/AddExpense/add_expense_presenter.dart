@@ -12,18 +12,20 @@ class AddExpensePresenter extends Presenter {
       : saveExpenseUseCase = SaveExpenseUseCase(userInfoRepo);
 
   void saveExpense(
-      String title,
-      double value,
-      DateTime dateTime,
-      String category
-      ) {
+    String title,
+    double value,
+    DateTime dateTime,
+    String category,
+    String userId,
+  ) {
     saveExpenseUseCase.execute(
       _SaveExpenseUseCaseObserver(this),
       SaveExpenseUseCaseParams(
         title,
         value,
         dateTime,
-          category,
+        category,
+        userId,
       ),
     );
   }
@@ -35,22 +37,22 @@ class AddExpensePresenter extends Presenter {
 }
 
 class _SaveExpenseUseCaseObserver extends Observer<void> {
-final AddExpensePresenter presenter;
+  final AddExpensePresenter presenter;
 
-_SaveExpenseUseCaseObserver(this.presenter);
+  _SaveExpenseUseCaseObserver(this.presenter);
 
-@override
-void onComplete() {
-  if (presenter.onSaveComplete == null) return;
-  presenter.onSaveComplete();
-}
+  @override
+  void onComplete() {
+    if (presenter.onSaveComplete == null) return;
+    presenter.onSaveComplete();
+  }
 
-@override
-void onError(e) {
-  if (presenter.onSaveError == null) return;
-  presenter.onSaveError(e);
-}
+  @override
+  void onError(e) {
+    if (presenter.onSaveError == null) return;
+    presenter.onSaveError(e);
+  }
 
-@override
-void onNext(response) {}
+  @override
+  void onNext(response) {}
 }

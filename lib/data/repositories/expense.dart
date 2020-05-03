@@ -6,7 +6,7 @@ class ExpenseRepository extends ExpenseBaseRepository {
   static const String _endpoint = 'api/user/expenses';
 
   @override
-  Future saveExpense(Expense expense) async {
+  Future saveExpense(Expense expense, String userId) async {
     await HttpHelper.invoke(
       _endpoint,
       RequestType.post,
@@ -20,23 +20,37 @@ class ExpenseRepository extends ExpenseBaseRepository {
 //        await HttpHelper.invoke('$_endpoint/$userId', RequestType.get);
 
 //    return response?.values?.map((v) => Expense.fromJson(v));
-    print('AQUI');
     return Future.delayed(Duration(seconds: 3), () {
       return <Expense>[
         Expense(
           title: 'Mercado',
           value: 21.20,
           dateTime: DateTime(2020, 1, 1, 10, 5),
+          category: 'MERCADO',
         ),
         Expense(
-          title: 'Padaria',
+          title: 'PetShop',
           value: 74.30,
           dateTime: DateTime(2020, 1, 1, 15, 5),
+          category: 'PETSHOP',
         ),
         Expense(
           title: 'Lemax',
           value: 174.30,
           dateTime: DateTime(2020, 1, 1, 18, 5),
+          category: 'ALIMENTATION',
+        ),
+        Expense(
+          title: 'Viagem',
+          value: 174.30,
+          dateTime: DateTime(2020, 1, 1, 18, 5),
+          category: 'TRAVEL',
+        ),
+        Expense(
+          title: 'Uber',
+          value: 174.30,
+          dateTime: DateTime(2020, 1, 1, 18, 5),
+          category: 'TRANSPORTATION',
         ),
       ];
     });

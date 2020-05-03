@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:gerenciar_financas_app/app/base_controller.dart';
+import 'package:gerenciar_financas_app/app/pages/AddExpense/add_expense_view.dart';
 import 'package:gerenciar_financas_app/app/pages/Home/expense_presenter.dart';
 import 'package:gerenciar_financas_app/data/repositories/expense.dart';
 import 'package:gerenciar_financas_app/domain/models/expense.dart';
@@ -70,5 +72,10 @@ class HomeController extends BaseController {
     } else if (remainingDailyLimit.isNegative) {
       remainingDailyLimitPercent = -1;
     }
+  }
+
+  void navigateToAddExpense() {
+    Navigator.of(getContext()).pushReplacement(
+        MaterialPageRoute(builder: (context) => AddExpensePage(userInfo)));
   }
 }
