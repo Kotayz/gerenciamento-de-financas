@@ -13,6 +13,7 @@ class UserInfoRepository extends UserInfoBaseRepository {
       RequestType.post,
       data: userInfo.toJson(),
     );
+    LocalStorage.savedUserId(userInfo.email);
   }
 
   @override
