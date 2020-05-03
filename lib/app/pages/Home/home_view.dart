@@ -5,9 +5,7 @@ import 'package:gerenciar_financas_app/domain/models/user_info.dart';
 import 'package:intl/intl.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 
-const icons = {
-  'ADD': Icons.add
-};
+const icons = {'ADD': Icons.add};
 
 class HomePage extends View {
   final UserInfo userInfo;
@@ -61,7 +59,8 @@ class _HomePageState extends ViewState<HomePage, HomeController> {
                     Flexible(
                       child: ListTile(
                         title: Text('Limite diário disponível'),
-                        subtitle: Text('Valor diário disponível: R\$200,00'),
+                        subtitle: Text(
+                            'Valor diário disponível: R\$${(controller.dailyLimit ?? 0).toStringAsFixed(2)}'),
                       ),
                     ),
                   ],
@@ -89,50 +88,52 @@ class _HomePageState extends ViewState<HomePage, HomeController> {
                         ),
                       ),
                     ),
-                    controller.isLoadingExpenses
-                        ? CircularProgressIndicator()
-                        : Expanded(
-                            child: ListView.builder(
-                              padding: const EdgeInsets.all(8),
-                              itemCount: controller.expenses?.length ?? 0,
-                              itemBuilder: (BuildContext context, int index) {
-                                var expense = controller.expenses[index];
-                                return ListTile(
-                                  leading: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      Icon(LineAwesomeIcons.coffee, color: Colors.white,),
-                                    ],
-                                  ),
-                                  title: Text(
-                                    expense.title,
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                  subtitle: Text(
-                                    DateFormat().add_Hm().format( expense.dateTime)
-                                   ,
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                  trailing: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.center,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: <Widget>[
-                                      Icon(
-                                        Icons.remove,
-                                        size: 15,
-                                        color: Colors.white,
-                                      ),
-                                      Text(
-                                        expense.value.toString(),
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              },
+                    Expanded(
+                      child: ListView.builder(
+                        padding: const EdgeInsets.all(8),
+                        itemCount:
+                            controller.userInfo?.additionalExpenses?.length ??
+                                0,
+                        itemBuilder: (BuildContext context, int index) {
+                          var expense =
+                              controller.userInfo.additionalExpenses[index];
+                          return ListTile(
+                            leading: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Icon(
+                                  LineAwesomeIcons.coffee,
+                                  color: Colors.white,
+                                ),
+                              ],
                             ),
-                          ),
+                            title: Text(
+                              expense.title,
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            subtitle: Text(
+                              DateFormat().add_Hm().format(expense.dateTime),
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            trailing: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                Icon(
+                                  Icons.remove,
+                                  size: 15,
+                                  color: Colors.white,
+                                ),
+                                Text(
+                                  expense.value.toString(),
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    ),
                   ],
                 ),
               ),

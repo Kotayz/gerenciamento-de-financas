@@ -4,7 +4,7 @@ import 'package:gerenciar_financas_app/domain/models/user_info.dart';
 import 'package:gerenciar_financas_app/domain/repositories/user_info.base.dart';
 
 class UserInfoRepository extends UserInfoBaseRepository {
-  static const String _endpoint = 'api/users';
+  static const String _endpoint = 'api/user';
 
   @override
   Future saveUserInfo(UserInfo userInfo) async {
@@ -13,7 +13,7 @@ class UserInfoRepository extends UserInfoBaseRepository {
       RequestType.post,
       data: userInfo.toJson(),
     );
-    LocalStorage.savedUserId(userInfo.email);
+    LocalStorage.saveUserId(userInfo.email);
   }
 
   @override
@@ -25,6 +25,6 @@ class UserInfoRepository extends UserInfoBaseRepository {
 
   @override
   Future<String> getSavedUserId() async {
-    return await LocalStorage.getSavedUserId();
+    return await LocalStorage.getUserId();
   }
 }

@@ -3,7 +3,7 @@ import 'package:gerenciar_financas_app/domain/models/expense.dart';
 import 'package:gerenciar_financas_app/domain/repositories/expense.base.dart';
 
 class ExpenseRepository extends ExpenseBaseRepository {
-  static const String _endpoint = 'api/expenses';
+  static const String _endpoint = 'api/user/expenses';
 
   @override
   Future saveExpense(Expense expense) async {

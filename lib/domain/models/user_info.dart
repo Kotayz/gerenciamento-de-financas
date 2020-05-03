@@ -1,3 +1,5 @@
+import 'package:gerenciar_financas_app/domain/models/expense.dart';
+
 class UserInfo {
   String name;
   String email;
@@ -6,6 +8,7 @@ class UserInfo {
   bool flagTipsPhone;
   double monthlyIncome;
   double monthlyExpenses;
+  List<Expense> additionalExpenses;
 
   UserInfo({
     this.name,
@@ -15,10 +18,17 @@ class UserInfo {
     this.flagTipsPhone,
     this.monthlyIncome,
     this.monthlyExpenses,
+    this.additionalExpenses,
   });
 
   factory UserInfo.fromJson(Map<String, dynamic> json) {
     if (json == null) return null;
+
+    var expenses = List<Expense>();
+    if (json.containsKey('gastos')) {
+      var expensesJson = json['gastos'] as Map<String, dynamic>;
+      expenses = expensesJson.values.map((v) => Expense.fromJson(v));
+    }
 
     return UserInfo(
       name: json['nomeUsuario'],
@@ -28,6 +38,7 @@ class UserInfo {
       flagTipsPhone: json['flagDicasCelular'],
       monthlyIncome: json['rendaMes'],
       monthlyExpenses: json['gastosMes'],
+      additionalExpenses: expenses,
     );
   }
 
@@ -40,6 +51,9 @@ class UserInfo {
     data['flagDicasCelular'] = this.flagTipsPhone;
     data['rendaMes'] = this.monthlyIncome;
     data['gastosMes'] = this.monthlyExpenses;
+    if (additionalExpenses?.length ?? 0 > 0 ) {
+      data['gastos'] = additionalExpenses.map((v) => v.toJson());
+    }
     return data;
   }
 }
