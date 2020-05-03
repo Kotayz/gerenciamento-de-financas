@@ -3,9 +3,13 @@ import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 import 'package:gerenciar_financas_app/app/pages/Home/home_controller.dart';
 import 'package:gerenciar_financas_app/domain/models/user_info.dart';
 import 'package:intl/intl.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-const icons = {'ADD': Icons.add};
+const icons = {
+  'MERCADO': FontAwesomeIcons.shoppingBasket,
+  'PETSHOP': FontAwesomeIcons.paw,
+  'ALIMENTATION': FontAwesomeIcons.hamburger,
+};
 
 class HomePage extends View {
   final UserInfo userInfo;
@@ -54,13 +58,11 @@ class _HomePageState extends ViewState<HomePage, HomeController> {
               flex: 1,
               child: Card(
                 child: Column(
-                  mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     Flexible(
                       child: ListTile(
                         title: Text('Limite diário disponível'),
-                        subtitle: Text(
-                            'Valor diário disponível: R\$${(controller.dailyLimit ?? 0).toStringAsFixed(2)}'),
+                        subtitle: Text('Valor diário disponível: R\$200,00'),
                       ),
                     ),
                   ],
@@ -68,7 +70,7 @@ class _HomePageState extends ViewState<HomePage, HomeController> {
               ),
             ),
             Flexible(
-              flex: 2,
+              flex: 9,
               child: Card(
                 color: Colors.blue,
                 shape: RoundedRectangleBorder(
@@ -87,6 +89,7 @@ class _HomePageState extends ViewState<HomePage, HomeController> {
                           fontSize: 20,
                         ),
                       ),
+                     trailing: IconButton(icon: Icon(Icons.add, color: Colors.white, size: 30,), onPressed: (){}),
                     ),
                     Expanded(
                       child: ListView.builder(
@@ -102,7 +105,7 @@ class _HomePageState extends ViewState<HomePage, HomeController> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 Icon(
-                                  LineAwesomeIcons.coffee,
+                                  FontAwesomeIcons.shoppingBasket,
                                   color: Colors.white,
                                 ),
                               ],
@@ -138,16 +141,6 @@ class _HomePageState extends ViewState<HomePage, HomeController> {
                 ),
               ),
             ),
-            Flexible(
-              flex: 1,
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  doneButton("Adicionar gastos", 15),
-                ],
-              ),
-            )
           ],
         ),
       ),
