@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 import 'package:gerenciar_financas_app/app/pages/Home/home_controller.dart';
@@ -28,7 +29,6 @@ class _HomePageState extends ViewState<HomePage, HomeController> {
   @override
   void initState() {
     super.initState();
-    controller.loadExpenses();
   }
 
   Widget doneButton(String text, double fontSize) {
@@ -51,33 +51,36 @@ class _HomePageState extends ViewState<HomePage, HomeController> {
         title: Text('Home'),
       ),
       body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: getBackgroundGradientColors(controller.remainingDailyLimit),
+          ),
+        ),
         child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
+            header(),
             Flexible(
-              flex: 1,
-              child: Card(
-                child: Column(
-                  children: <Widget>[
-                    Flexible(
-                      child: ListTile(
-                        title: Text('Limite diário disponível'),
-                        subtitle: Text(
-                            'Valor diário disponível: R\$${(controller.dailyLimit ?? 0).toStringAsFixed(2)}'),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Flexible(
-              flex: 9,
+              flex: 2,
               child: Card(
                 color: Colors.blue,
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0)),
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(30.0),
+                    topLeft: Radius.circular(30.0),
+                  ),
+                ),
+                elevation: 0,
+                margin: EdgeInsets.only(
+                  bottom: 0,
+                  left: 8,
+                  right: 8,
+                  top: 4,
+                ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -101,53 +104,57 @@ class _HomePageState extends ViewState<HomePage, HomeController> {
                           onPressed: () {}),
                     ),
                     Expanded(
-                      child: ListView.builder(
-                        padding: const EdgeInsets.all(8),
-                        itemCount:
-                            controller.userInfo?.additionalExpenses?.length ??
-                                0,
-                        itemBuilder: (BuildContext context, int index) {
-                          var expense =
-                              controller.userInfo.additionalExpenses[index];
-                          return ListTile(
-                            leading: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Icon(
-                                  icons[expense.category],
-                                  color: Colors.white,
-                                ),
-                              ],
+                      child: (controller.expensesOfTheDay?.length ?? 0) <= 0
+                          ? emptyListView()
+                          : ListView.builder(
+                              padding: const EdgeInsets.all(8),
+                              itemCount: controller
+                                      .userInfo?.additionalExpenses?.length ??
+                                  0,
+                              itemBuilder: (BuildContext context, int index) {
+                                var expense = controller
+                                    .userInfo.additionalExpenses[index];
+                                return ListTile(
+                                  leading: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Icon(
+                                        icons[expense.category],
+                                        color: Colors.white,
+                                      ),
+                                    ],
+                                  ),
+                                  title: Text(
+                                    expense.title,
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  subtitle: Text(
+                                    DateFormat()
+                                        .add_Hm()
+                                        .format(expense.dateTime),
+                                    style: TextStyle(color: Colors.white70),
+                                  ),
+                                  trailing: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: <Widget>[
+                                      Icon(
+                                        Icons.remove,
+                                        size: 15,
+                                        color: Colors.white,
+                                      ),
+                                      Text(
+                                        expense.value.toString(),
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
                             ),
-                            title: Text(
-                              expense.title,
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            subtitle: Text(
-                              DateFormat().add_Hm().format(expense.dateTime),
-                              style: TextStyle(color: Colors.white70),
-                            ),
-                            trailing: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                Icon(
-                                  Icons.remove,
-                                  size: 15,
-                                  color: Colors.white,
-                                ),
-                                Text(
-                                  expense.value.toString(),
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
                     ),
                   ],
                 ),
@@ -156,6 +163,121 @@ class _HomePageState extends ViewState<HomePage, HomeController> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget header() {
+    var remainingDailyLimitTxt =
+        controller.remainingDailyLimit.isNegative ? '-' : '';
+    remainingDailyLimitTxt +=
+        'R\$${(controller.remainingDailyLimit.abs() ?? 0).toStringAsFixed(2)}';
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 40,
+        vertical: 20,
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Icon(
+            getSentimentIcon(controller.remainingDailyLimit),
+            color: Colors.white,
+            size: 70,
+          ),
+          Text(
+            remainingDailyLimitTxt,
+            style: TextStyle(
+              fontSize: 30,
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          Container(
+            height: 15,
+            decoration: BoxDecoration(
+              border: Border.all(width: 1, color: Colors.orange),
+            ),
+            child: LinearProgressIndicator(
+              value: controller.remainingDailyLimit,
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.orangeAccent),
+              backgroundColor: Colors.white,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  IconData getSentimentIcon(double remainingLimitPercent) {
+    if (remainingLimitPercent > 0.75) {
+      return Icons.sentiment_very_satisfied;
+    } else if (remainingLimitPercent > 0.5) {
+      return Icons.sentiment_satisfied;
+    } else if (remainingLimitPercent > 0.25) {
+      return Icons.sentiment_neutral;
+    } else if (remainingLimitPercent >= 0) {
+      return Icons.sentiment_dissatisfied;
+    }
+
+    return Icons.sentiment_very_dissatisfied;
+  }
+
+  List<Color> getBackgroundGradientColors(double remainingLimitPercent) {
+    if (remainingLimitPercent > 0.75) {
+      return [
+        Colors.green,
+        Colors.greenAccent,
+      ];
+    } else if (remainingLimitPercent > 0.5) {
+      return [
+        Colors.lightGreen,
+        Colors.lightGreenAccent,
+      ];
+    } else if (remainingLimitPercent > 0.25) {
+      return [
+        Colors.yellow,
+        Colors.yellowAccent,
+      ];
+    } else if (remainingLimitPercent >= 0) {
+      return [
+        Colors.amber,
+        Colors.amberAccent,
+      ];
+    }
+
+    return [
+      Colors.red,
+      Colors.redAccent,
+    ];
+  }
+
+  Widget emptyListView() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        Icon(
+          Icons.monetization_on,
+          color: Colors.white,
+          size: 70,
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 60,
+          ),
+          child: Text(
+            'Parabéns, você não possui gastos hoje',
+            style: TextStyle(
+              fontSize: 18,
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        )
+      ],
     );
   }
 }
