@@ -62,7 +62,8 @@ class _HomePageState extends ViewState<HomePage, HomeController> {
                     Flexible(
                       child: ListTile(
                         title: Text('Limite diário disponível'),
-                        subtitle: Text('Valor diário disponível: R\$200,00'),
+                        subtitle: Text(
+                            'Valor diário disponível: R\$${(controller.dailyLimit ?? 0).toStringAsFixed(2)}'),
                       ),
                     ),
                   ],
@@ -89,7 +90,13 @@ class _HomePageState extends ViewState<HomePage, HomeController> {
                           fontSize: 20,
                         ),
                       ),
-                     trailing: IconButton(icon: Icon(Icons.add, color: Colors.white, size: 30,), onPressed: (){}),
+                      trailing: IconButton(
+                          icon: Icon(
+                            Icons.add,
+                            color: Colors.white,
+                            size: 30,
+                          ),
+                          onPressed: () {}),
                     ),
                     Expanded(
                       child: ListView.builder(
@@ -105,7 +112,7 @@ class _HomePageState extends ViewState<HomePage, HomeController> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 Icon(
-                                  FontAwesomeIcons.shoppingBasket,
+                                  icons[expense.category],
                                   color: Colors.white,
                                 ),
                               ],
@@ -116,7 +123,7 @@ class _HomePageState extends ViewState<HomePage, HomeController> {
                             ),
                             subtitle: Text(
                               DateFormat().add_Hm().format(expense.dateTime),
-                              style: TextStyle(color: Colors.white),
+                              style: TextStyle(color: Colors.white70),
                             ),
                             trailing: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -129,7 +136,10 @@ class _HomePageState extends ViewState<HomePage, HomeController> {
                                 ),
                                 Text(
                                   expense.value.toString(),
-                                  style: TextStyle(color: Colors.white),
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
                                 ),
                               ],
                             ),
