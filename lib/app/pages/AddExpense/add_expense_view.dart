@@ -41,6 +41,7 @@ class _AddExpensePageState
   @override
   Widget buildPage() {
     return Scaffold(
+      key: globalKey,
       appBar: AppBar(
         title: Text('Adicionar Gasto'),
       ),
@@ -49,63 +50,76 @@ class _AddExpensePageState
         padding: EdgeInsets.symmetric(horizontal: 20),
         child: Container(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              TextFormField(
-                decoration: InputDecoration(
-                  labelText: 'Descrição',
-                  focusColor: Colors.white,
-                  hoverColor: Colors.white,
-                  fillColor: Colors.white,
-                  prefixIcon: Icon(Icons.speaker_notes),
-                ),
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.white,
-                  decorationColor: Colors.white,
+              Flexible(
+                flex: 1,
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    labelText: 'Descrição',
+                    focusColor: Colors.white,
+                    hoverColor: Colors.white,
+                    fillColor: Colors.white,
+                    prefixIcon: Icon(Icons.speaker_notes),
+                  ),
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.white,
+                    decorationColor: Colors.white,
+                  ),
                 ),
               ),
-              TextFormField(
-                decoration: InputDecoration(
-                  labelText: 'Valor',
-                  focusColor: Colors.white,
-                  hoverColor: Colors.white,
-                  fillColor: Colors.white,
-                  prefixIcon: Icon(Icons.monetization_on),
+              Flexible(
+                flex: 1,
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    labelText: 'Valor',
+                    focusColor: Colors.white,
+                    hoverColor: Colors.white,
+                    fillColor: Colors.white,
+                    prefixIcon: Icon(Icons.monetization_on),
+                  ),
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.white,
+                    decorationColor: Colors.white,
+                  ),
+                  keyboardType: TextInputType.number,
                 ),
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.white,
-                  decorationColor: Colors.white,
-                ),
-                keyboardType: TextInputType.number,
               ),
-              DateTimeField(
-                decoration: InputDecoration(
-                  labelText: 'Data',
-                  prefixIcon: Icon(Icons.date_range),
+              Flexible(
+                flex: 1,
+                child: DateTimeField(
+                  decoration: InputDecoration(
+                    labelText: 'Data',
+                    prefixIcon: Icon(Icons.date_range),
+                  ),
+                  format: DateFormat("HH:mm"),
+                  onShowPicker: (context, currentValue) async {
+                    final time = await showTimePicker(
+                      context: context,
+                      initialTime: TimeOfDay.fromDateTime(
+                          currentValue ?? DateTime.now()),
+                    );
+                    return DateTimeField.convert(time);
+                  },
                 ),
-                format: DateFormat("HH:mm"),
-                onShowPicker: (context, currentValue) async {
-                  final time = await showTimePicker(
-                    context: context,
-                    initialTime:
-                        TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
-                  );
-                  return DateTimeField.convert(time);
-                },
               ),
-              DropdownButton(
-                items: categories,
-                onChanged: (String value){},
-                hint: Text('Selecione uma categoria'),
+              Flexible(
+                flex: 1,
+                child: DropdownButton(
+                  items: categories,
+                  onChanged: (String value) {},
+                  hint: Text('Selecione uma categoria'),
+                ),
               ),
               Spacer(flex: 1),
-              Row(children: <Widget>[
-                Expanded(child: doneButton('Salvar', 20))
-              ])
+              Flexible(
+                flex: 2,
+                child: Row(
+                  children: <Widget>[Expanded(child: saveButton('Salvar', 20))],
+                ),
+              )
             ],
           ),
         ),
@@ -113,13 +127,7 @@ class _AddExpensePageState
     );
   }
 
-  Widget reusableTextHeader(String value) {
-    return Text(value,
-        style: TextStyle(
-            fontSize: 35, fontWeight: FontWeight.bold, color: Colors.black));
-  }
-
-  Widget doneButton(String text, double fontSize) {
+  Widget saveButton(String text, double fontSize) {
     return FlatButton(
       color: Colors.blueAccent,
       textColor: Colors.white,
@@ -128,33 +136,7 @@ class _AddExpensePageState
       highlightColor: Colors.indigoAccent,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
       child: Text(text, style: TextStyle(fontSize: fontSize)),
-      onPressed: () {},
-    );
-  }
-
-  Widget reusableTextFieldWithTextStyle(
-    String labelText,
-    double fontSize, {
-    TextInputType inputType = TextInputType.text,
-    TextEditingController textController,
-    FormFieldValidator<String> validator,
-  }) {
-    return TextFormField(
-      controller: textController,
-      keyboardType: inputType,
-//      autovalidate: controller.autoValidatePersonalDataForm,
-      validator: validator,
-      decoration: InputDecoration(
-        labelText: labelText,
-        focusColor: Colors.white,
-        hoverColor: Colors.white,
-        fillColor: Colors.white,
-      ),
-      style: TextStyle(
-        fontSize: fontSize,
-        color: Colors.white,
-        decorationColor: Colors.white,
-      ),
+      onPressed: controller.saveExpense,
     );
   }
 }

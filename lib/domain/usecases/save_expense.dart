@@ -35,6 +35,7 @@ class SaveExpenseUseCaseParams {
   final String title;
   final double value;
   final DateTime dateTime;
+  final String category;
 
-  SaveExpenseUseCaseParams(this.title, this.value, this.dateTime);
+  SaveExpenseUseCaseParams(this.title, this.value, this.dateTime, this.category);
 }

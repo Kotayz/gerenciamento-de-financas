@@ -9,6 +9,8 @@ const icons = {
   'MERCADO': FontAwesomeIcons.shoppingBasket,
   'PETSHOP': FontAwesomeIcons.paw,
   'ALIMENTATION': FontAwesomeIcons.hamburger,
+  'TRANSPORTATION': FontAwesomeIcons.taxi,
+  'TRAVEL': FontAwesomeIcons.suitcaseRolling,
 };
 
 class HomePage extends View {

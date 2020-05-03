@@ -23,21 +23,6 @@ class ExpensePresenter extends Presenter {
         _FetchUserExpenseUseCaseObserver(this), userId);
   }
 
-  void saveExpense(
-    String title,
-    double value,
-    DateTime dateTime,
-  ) {
-    saveExpenseUseCase.execute(
-      _SaveExpenseUseCaseObserver(this),
-      SaveExpenseUseCaseParams(
-        title,
-        value,
-        dateTime,
-      ),
-    );
-  }
-
   @override
   void dispose() {
     saveExpenseUseCase.dispose();
