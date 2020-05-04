@@ -14,7 +14,14 @@ class GetSavedUserInfoUseCase extends UseCase<UserInfo, void> {
     final StreamController<UserInfo> controller = StreamController();
     try {
       String userId = await userInfoRepository.getSavedUserId();
-      UserInfo userInfo = await userInfoRepository.getUserInfo(userId);
+
+      UserInfo userInfo;
+      if (userId != null) {
+        userInfo = await userInfoRepository.getUserInfo(userId);
+      }
+
+      print(userInfo);
+
       controller.add(userInfo);
     } catch (e) {
       controller.addError(e);

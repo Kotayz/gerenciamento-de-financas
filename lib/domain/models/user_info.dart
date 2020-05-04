@@ -36,8 +36,8 @@ class UserInfo {
       phone: json['celular'],
       flagTipsEmail: json['flagDicasEmail'],
       flagTipsPhone: json['flagDicasCelular'],
-      monthlyIncome: json['rendaMes'],
-      monthlyExpenses: json['gastosMes'],
+      monthlyIncome: json['rendaMes']?.toDouble() ?? 0,
+      monthlyExpenses: json['gastosMes']?.toDouble() ?? 0,
       additionalExpenses: expenses,
     );
   }

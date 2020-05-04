@@ -5,15 +5,15 @@ import 'package:gerenciar_financas_app/domain/models/user_info.dart';
 import 'package:gerenciar_financas_app/domain/repositories/user_info.base.dart';
 
 class SaveUserInfoUseCase
-    extends CompletableUseCase<SaveUserInfoUseCaseParams> {
+    extends UseCase<UserInfo, SaveUserInfoUseCaseParams> {
   final UserInfoBaseRepository userInfoRepository;
 
   SaveUserInfoUseCase(this.userInfoRepository);
 
   @override
-  Future<Stream<void>> buildUseCaseStream(
+  Future<Stream<UserInfo>> buildUseCaseStream(
       SaveUserInfoUseCaseParams params) async {
-    final StreamController<void> controller = StreamController();
+    final StreamController<UserInfo> controller = StreamController();
     try {
       UserInfo userInfo = new UserInfo(
         name: params.name,
@@ -26,7 +26,7 @@ class SaveUserInfoUseCase
       );
       await userInfoRepository.saveUserInfo(userInfo);
 
-//      controller.add(response);
+      controller.add(userInfo);
     } catch (e) {
       controller.addError(e);
     }

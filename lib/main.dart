@@ -19,8 +19,8 @@ class BuildMain extends StatelessWidget {
       title: 'ADMI',
       theme:
           ThemeData().copyWith(appBarTheme: AppBarTheme(color: Colors.black)),
-      home: HomePage(UserInfo()),
-//      home: SplashPage(),
+//      home: HomePage(UserInfo()),
+      home: SplashPage(),
     );
   }
 }

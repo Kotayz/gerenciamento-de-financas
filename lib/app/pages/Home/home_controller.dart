@@ -7,8 +7,6 @@ import 'package:gerenciar_financas_app/domain/models/expense.dart';
 import 'package:gerenciar_financas_app/domain/models/user_info.dart';
 import 'package:gerenciar_financas_app/utils/date.dart';
 
-import 'home_presenter.dart';
-
 class HomeController extends BaseController {
   final StreamExpensePresenter _streamExpensePresenter;
   final UserInfo userInfo;

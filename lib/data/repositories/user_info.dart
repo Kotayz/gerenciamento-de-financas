@@ -20,11 +20,14 @@ class UserInfoRepository extends UserInfoBaseRepository {
   Future<UserInfo> getUserInfo(String userId) async {
     Map<String, dynamic> response =
         await HttpHelper.invoke('$_endpoint/$userId', RequestType.get);
-    return UserInfo.fromJson(response);
+    var userInfoJson = response['message']['Item'];
+    print(userInfoJson);
+    return UserInfo.fromJson(userInfoJson);
   }
 
   @override
   Future<String> getSavedUserId() async {
     return await LocalStorage.getUserId();
+//    return (await LocalStorage.getUserId()) ?? 'John.creed@terra.com.br';
   }
 }

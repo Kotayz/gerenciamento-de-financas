@@ -31,10 +31,10 @@ class InitialUserInfoController extends BaseController {
 
   @override
   void initListeners() {
-    _saveUserInfoPresenter.onComplete = () {
+    _saveUserInfoPresenter.onNext = (userInfo) {
       if (!_hasError)
         Navigator.of(getContext()).pushReplacement(
-            MaterialPageRoute(builder: (context) => HomePage(UserInfo())));
+            MaterialPageRoute(builder: (context) => HomePage(userInfo)));
     };
 
     _saveUserInfoPresenter.onError = (e) {
