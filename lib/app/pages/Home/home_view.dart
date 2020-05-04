@@ -47,6 +47,7 @@ class _HomePageState extends ViewState<HomePage, HomeController> {
   @override
   Widget buildPage() {
     return Scaffold(
+      key: globalKey,
       appBar: AppBar(
         title: Text('Home'),
       ),
@@ -101,7 +102,9 @@ class _HomePageState extends ViewState<HomePage, HomeController> {
                             color: Colors.white,
                             size: 30,
                           ),
-                          onPressed: () {}),
+                          onPressed: () {
+                            controller.navigateToAddExpense();
+                          }),
                     ),
                     Expanded(
                       child: (controller.expensesOfTheDay?.length ?? 0) <= 0

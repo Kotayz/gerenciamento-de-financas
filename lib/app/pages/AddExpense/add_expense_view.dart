@@ -31,7 +31,7 @@ class _AddExpensePageState
     ),
     DropdownMenuItem(
       child: Text('Alimentação'),
-      value: 'ALIMENTATION',
+      value: 'FOOD',
     ),
     DropdownMenuItem(
       child: Text('Transporte'),

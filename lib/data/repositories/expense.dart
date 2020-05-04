@@ -7,10 +7,14 @@ class ExpenseRepository extends ExpenseBaseRepository {
 
   @override
   Future saveExpense(Expense expense, String userId) async {
+    var data = {
+      "email_id": userId,
+      "gasto": expense.toJson(),
+    };
     await HttpHelper.invoke(
       _endpoint,
       RequestType.post,
-      data: expense.toJson(),
+      data: data,
     );
   }
 
@@ -38,7 +42,7 @@ class ExpenseRepository extends ExpenseBaseRepository {
           title: 'Lemax',
           value: 174.30,
           dateTime: DateTime(2020, 1, 1, 18, 5),
-          category: 'ALIMENTATION',
+          category: 'FOOD',
         ),
         Expense(
           title: 'Viagem',
