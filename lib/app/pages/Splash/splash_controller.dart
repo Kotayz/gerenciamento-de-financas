@@ -26,6 +26,7 @@ class SplashController extends BaseController {
     };
 
     _splashPresenter.onError = (e) {
+      print(e);
       Navigator.of(getContext()).pushReplacement(
           MaterialPageRoute(builder: (context) => InitialUserInfoPage()));
     };

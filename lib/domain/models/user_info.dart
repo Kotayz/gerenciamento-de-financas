@@ -26,8 +26,8 @@ class UserInfo {
 
     var expenses = List<Expense>();
     if (json.containsKey('gastos')) {
-      var expensesJson = json['gastos'] as Map<String, dynamic>;
-      expenses = expensesJson.values.map((v) => Expense.fromJson(v));
+      var expensesJson = json['gastos'] as List<dynamic>;
+      expenses = expensesJson.map((v) => Expense.fromJson(v)).toList();
     }
 
     return UserInfo(

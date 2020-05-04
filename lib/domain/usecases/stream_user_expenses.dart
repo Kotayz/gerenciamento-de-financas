@@ -18,8 +18,10 @@ class StreamUserExpensesUseCase extends UseCase<List<Expense>, String> {
     _controller = StreamController();
     Timer.periodic(Duration(seconds: 30), (Timer t) async {
       try {
+        var date = DateTime.now().millisecondsSinceEpoch;
+        print(date);
         List<Expense> expenses =
-            await expenseBaseRepository.fetchExpenses(userId);
+            await expenseBaseRepository.fetchExpenses(userId, date);
         _controller.add(expenses);
       } catch (e) {
         _controller.addError(e);

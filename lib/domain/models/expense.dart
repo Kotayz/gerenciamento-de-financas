@@ -15,7 +15,7 @@ class Expense {
 
     return Expense(
       title: json['descricaoGasto'],
-      value: json['valorGasto'],
+      value: json['valorGasto']?.toDouble() ?? 0,
       dateTime: DateTime.fromMillisecondsSinceEpoch(
         json['dataDespesa'],
         isUtc: true,

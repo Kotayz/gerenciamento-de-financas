@@ -21,7 +21,6 @@ class UserInfoRepository extends UserInfoBaseRepository {
     Map<String, dynamic> response =
         await HttpHelper.invoke('$_endpoint/$userId', RequestType.get);
     var userInfoJson = response['message']['Item'];
-    print(userInfoJson);
     return UserInfo.fromJson(userInfoJson);
   }
 

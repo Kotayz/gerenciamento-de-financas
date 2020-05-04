@@ -25,9 +25,7 @@ class AddExpenseController extends BaseController {
   @override
   void initListeners() {
     _addExpensePresenter.onSaveComplete = () {
-      if (!_hasError)
-        Navigator.of(getContext()).pushReplacement(
-            MaterialPageRoute(builder: (context) => HomePage(UserInfo())));
+      if (!_hasError) Navigator.of(getContext()).pop();
     };
 
     _addExpensePresenter.onSaveError = (e) {
@@ -37,13 +35,23 @@ class AddExpenseController extends BaseController {
   }
 
   void saveExpense() {
+    DateTime time = DateFormat('HH:mm').parse(dateTimeTextController.text);
+    DateTime now = DateTime.now();
+    DateTime date = DateTime(now.year, now.month, now.day, time.hour, time.minute);
+//
+//    print(date);
+//    print(date.isUtc);
+//    print(date.millisecondsSinceEpoch);
+//    print(date.timeZoneOffset);
+//    print(date.toLocal());
+
     _addExpensePresenter.saveExpense(
-        titleTextController.text,
-        double.parse(valueTextController.text),
-        DateFormat('HH:mm').parse(dateTimeTextController.text),
-        category,
-//      userInfo.email
-        'John.creed@terra.com.br');
+      titleTextController.text,
+      double.parse(valueTextController.text),
+      DateTime(now.year, now.month, now.day, time.hour, time.minute),
+      category,
+      userInfo.email,
+    );
 
     refreshUI();
   }

@@ -20,6 +20,9 @@ class HttpHelper {
 
       Response response;
 
+      print('${dio.options.baseUrl}$url');
+      print(jsonEncode(data));
+
       switch (type) {
         case RequestType.get:
           response = await dio.get(url);

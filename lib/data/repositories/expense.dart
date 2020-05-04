@@ -4,6 +4,7 @@ import 'package:gerenciar_financas_app/domain/repositories/expense.base.dart';
 
 class ExpenseRepository extends ExpenseBaseRepository {
   static const String _endpoint = 'api/user/expenses';
+  static const String _endpointGet = 'api/user';
 
   @override
   Future saveExpense(Expense expense, String userId) async {
@@ -19,44 +20,12 @@ class ExpenseRepository extends ExpenseBaseRepository {
   }
 
   @override
-  Future<List<Expense>> fetchExpenses(String userId) async {
-//    Map<String, dynamic> response =
-//        await HttpHelper.invoke('$_endpoint/$userId', RequestType.get);
+  Future<List<Expense>> fetchExpenses(String userId, int date) async {
+    Map<String, dynamic> response = await HttpHelper.invoke(
+        '$_endpointGet/$userId/date/$date', RequestType.get);
 
-//    return response?.values?.map((v) => Expense.fromJson(v));
-    return Future.delayed(Duration(seconds: 3), () {
-      return <Expense>[
-        Expense(
-          title: 'Mercado',
-          value: 21.20,
-          dateTime: DateTime(2020, 1, 1, 10, 5),
-          category: 'MERCADO',
-        ),
-        Expense(
-          title: 'PetShop',
-          value: 74.30,
-          dateTime: DateTime(2020, 1, 1, 15, 5),
-          category: 'PETSHOP',
-        ),
-        Expense(
-          title: 'Lemax',
-          value: 174.30,
-          dateTime: DateTime(2020, 1, 1, 18, 5),
-          category: 'FOOD',
-        ),
-        Expense(
-          title: 'Viagem',
-          value: 174.30,
-          dateTime: DateTime(2020, 1, 1, 18, 5),
-          category: 'TRAVEL',
-        ),
-        Expense(
-          title: 'Uber',
-          value: 174.30,
-          dateTime: DateTime(2020, 1, 1, 18, 5),
-          category: 'TRANSPORTATION',
-        ),
-      ];
-    });
+    List<dynamic> expensesJson = response['message'];
+    if (expensesJson == null) return null;
+    return expensesJson.map((v) => Expense.fromJson(v)).toList();
   }
 }

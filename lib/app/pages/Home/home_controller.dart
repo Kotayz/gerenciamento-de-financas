@@ -39,11 +39,22 @@ class HomeController extends BaseController {
   @override
   void initListeners() {
     _streamExpensePresenter.onNext = (expenses) {
-      if (expenses.length > (userInfo.additionalExpenses?.length ?? 0)) {
-        userInfo.additionalExpenses = expenses;
+      print(expenses?.length ?? 0);
+      print(expensesOfTheDay?.length ?? 0);
+      if (expenses.length > (expensesOfTheDay?.length ?? 0)) {
+        userInfo.additionalExpenses
+            .removeWhere((v) => DateUtils.isToday(v.dateTime));
+        print(expensesOfTheDay?.length ?? 0);
+        userInfo.additionalExpenses.addAll(expenses);
+        print(expensesOfTheDay?.length ?? 0);
+//        userInfo.additionalExpenses = expenses;
         calculateDailyLimit();
         refreshUI();
       }
+    };
+
+    _streamExpensePresenter.onError = (e) {
+      print(e);
     };
   }
 
@@ -73,7 +84,7 @@ class HomeController extends BaseController {
   }
 
   void navigateToAddExpense() {
-    Navigator.of(getContext()).pushReplacement(
+    Navigator.of(getContext()).push(
         MaterialPageRoute(builder: (context) => AddExpensePage(userInfo)));
   }
 }

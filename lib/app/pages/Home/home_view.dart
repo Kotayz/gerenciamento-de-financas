@@ -9,7 +9,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 const icons = {
   'MERCADO': FontAwesomeIcons.shoppingBasket,
   'PETSHOP': FontAwesomeIcons.paw,
-  'ALIMENTATION': FontAwesomeIcons.hamburger,
+  'FOOD': FontAwesomeIcons.hamburger,
   'TRANSPORTATION': FontAwesomeIcons.taxi,
   'TRAVEL': FontAwesomeIcons.suitcaseRolling,
 };
@@ -56,7 +56,8 @@ class _HomePageState extends ViewState<HomePage, HomeController> {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: getBackgroundGradientColors(controller.remainingDailyLimit),
+            colors: getBackgroundGradientColors(
+                controller.remainingDailyLimitPercent),
           ),
         ),
         child: Column(
@@ -111,12 +112,11 @@ class _HomePageState extends ViewState<HomePage, HomeController> {
                           ? emptyListView()
                           : ListView.builder(
                               padding: const EdgeInsets.all(8),
-                              itemCount: controller
-                                      .userInfo?.additionalExpenses?.length ??
-                                  0,
+                              itemCount:
+                                  controller.expensesOfTheDay?.length ?? 0,
                               itemBuilder: (BuildContext context, int index) {
-                                var expense = controller
-                                    .userInfo.additionalExpenses[index];
+                                var expense =
+                                    controller.expensesOfTheDay[index];
                                 return ListTile(
                                   leading: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -184,7 +184,7 @@ class _HomePageState extends ViewState<HomePage, HomeController> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Icon(
-            getSentimentIcon(controller.remainingDailyLimit),
+            getSentimentIcon(controller.remainingDailyLimitPercent),
             color: Colors.white,
             size: 70,
           ),
@@ -203,7 +203,7 @@ class _HomePageState extends ViewState<HomePage, HomeController> {
               border: Border.all(width: 1, color: Colors.orange),
             ),
             child: LinearProgressIndicator(
-              value: controller.remainingDailyLimit,
+              value: controller.remainingDailyLimitPercent,
               valueColor: AlwaysStoppedAnimation<Color>(Colors.orangeAccent),
               backgroundColor: Colors.white,
             ),

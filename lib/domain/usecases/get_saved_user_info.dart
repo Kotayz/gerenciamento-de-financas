@@ -15,6 +15,8 @@ class GetSavedUserInfoUseCase extends UseCase<UserInfo, void> {
     try {
       String userId = await userInfoRepository.getSavedUserId();
 
+      print(userId);
+
       UserInfo userInfo;
       if (userId != null) {
         userInfo = await userInfoRepository.getUserInfo(userId);

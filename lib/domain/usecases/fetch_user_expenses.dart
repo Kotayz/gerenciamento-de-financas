@@ -15,7 +15,8 @@ class FetchUserExpensesUseCase extends UseCase<List<Expense>, String> {
   Future<Stream<List<Expense>>> buildUseCaseStream(String params) async {
     final StreamController<List<Expense>> controller = StreamController();
     try {
-      List<Expense> expenses = await expenseBaseRepository.fetchExpenses(params);
+      var date = DateTime.now().millisecondsSinceEpoch;
+      List<Expense> expenses = await expenseBaseRepository.fetchExpenses(params, date);
       controller.add(expenses);
     } catch (e) {
       controller.addError(e);
